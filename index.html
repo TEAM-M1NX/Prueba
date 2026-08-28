@@ -22,6 +22,7 @@
             --muted: #a1a1aa;
             --input-bg: #0a0a10;
             --success: #22c55e;
+            --danger: #ef4444;
         }
 
         body {
@@ -106,14 +107,6 @@
         .btn-google:hover {
             border-color: var(--accent);
             background: rgba(139,92,246,0.05);
-        }
-
-        .admin-note {
-            font-size: 0.75rem;
-            color: var(--success);
-            text-align: center;
-            margin-top: -1.5rem;
-            margin-bottom: 1.5rem;
         }
 
         /* Separador visual */
@@ -226,25 +219,69 @@
             font-size: 0.85rem;
         }
 
-        .role-info {
-            background: rgba(6,182,212,0.08);
-            border: 1px solid rgba(6,182,212,0.2);
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--accent-alt);
+        /* Modal / Alerta estilo nativo como en tu imagen */
+        .modal-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 1rem;
         }
+        .modal-alert.active { display: flex; }
+
+        .modal-content {
+            background: #1e1e24;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .modal-body .email {
+            font-weight: bold;
+            color: var(--text);
+            word-break: break-all;
+        }
+        .modal-body.success { color: var(--success); }
+        .modal-body.denied { color: var(--danger); }
+
+        .modal-footer {
+            text-align: right;
+        }
+        .modal-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+        }
+        .modal-btn:hover { text-decoration: underline; }
 
         /* Responsivo */
         @media (max-width: 480px) {
-            .login-box {
-                padding: 1.75rem;
-            }
-            .login-header h1 {
-                font-size: 1.5rem;
-            }
+            .login-box { padding: 1.75rem; }
+            .login-header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -257,7 +294,7 @@
         </div>
 
         <div class="login-box">
-            <!-- Botón Google (Solo Administrador) -->
+            <!-- Botón Google: Abre selector -->
             <button class="btn-google" id="btnGoogle">
                 <svg viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -267,14 +304,9 @@
                 </svg>
                 Continuar con Google
             </button>
-            <div class="admin-note">Solo para el Administrador</div>
 
             <div class="divider">
                 <span>Acceso Socios</span>
-            </div>
-
-            <div class="role-info">
-                <i class="fas fa-users"></i> Área exclusiva para socios autorizados
             </div>
 
             <!-- Formulario Socios: Usuario + PIN -->
@@ -305,60 +337,81 @@
         </div>
     </div>
 
-    <script>
-        // --- LÓGICA DE ACCESO ---
+    <!-- MODAL DE VERIFICACIÓN DE GOOGLE -->
+    <div class="modal-alert" id="googleModal">
+        <div class="modal-content">
+            <div class="modal-header">team-m1nx.github.io dice:</div>
+            <div class="modal-body" id="modalBody">
+                <!-- Se llena con JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" id="modalClose">Aceptar</button>
+            </div>
+        </div>
+    </div>
 
-        // 1. BOTÓN GOOGLE (ADMINISTRADOR)
+    <script>
+        const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
+        const modal = document.getElementById('googleModal');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+
+        // --- BOTÓN GOOGLE: SELECTOR REALISTA ---
         document.getElementById('btnGoogle').addEventListener('click', function() {
-            const correoAdmin = "jesusgutierrezmontanez05@gmail.com";
-            
-            // Simulamos la selección de cuenta
-            alert(`🔐 Selecciona tu cuenta de administrador:\n\n→ ${correoAdmin}\n\nEsta acción te llevará directamente al PANEL DE ADMINISTRACIÓN.`);
-            
-            // Aquí redirigirías al dashboard admin:
-            // window.location.href = "/admin-panel";
+            // Simulamos que el sistema abre el selector de cuentas del dispositivo
+            const cuentaSeleccionada = prompt("🔐 Selecciona una cuenta de Google:\n\n(Escribe tu correo para probar):", "");
+
+            if (!cuentaSeleccionada) {
+                // Canceló
+                return;
+            }
+
+            if (cuentaSeleccionada.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) {
+                // ✅ CORRECTO: Administrador
+                modalBody.className = "modal-body success";
+                modalBody.innerHTML = `
+                    <p>🔓 Cuenta seleccionada:</p>
+                    <p class="email">${cuentaSeleccionada}</p>
+                    <p>✅ Esta acción te llevará directamente al <strong>PANEL DE ADMINISTRACIÓN</strong>.</p>
+                `;
+                modal.classList.add('active');
+                // Redirigir después: window.location.href = "/admin-panel";
+            } else {
+                // ❌ DENEGADO: Cualquier otro correo
+                modalBody.className = "modal-body denied";
+                modalBody.innerHTML = `
+                    <p>⚠️ Cuenta seleccionada:</p>
+                    <p class="email">${cuentaSeleccionada}</p>
+                    <p>❌ <strong>Acceso denegado.</strong><br>No eres el administrador autorizado.</p>
+                `;
+                modal.classList.add('active');
+            }
         });
 
-        // 2. FORMULARIO SOCIOS (USUARIO + PIN)
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // --- FORMULARIO SOCIOS ---
         const form = document.getElementById('socioForm');
-        const userInput = document.getElementById('username');
-        const pinInput = document.getElementById('pin');
-
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', e => {
             e.preventDefault();
-            
-            if (!userInput.value.trim()) {
-                shakeField(userInput);
-                return;
-            }
-            if (!pinInput.value.trim() || pinInput.value.length < 4) {
-                shakeField(pinInput);
-                return;
-            }
+            const user = document.getElementById('username');
+            const pin = document.getElementById('pin');
 
-            // Simulación de verificación para socios
+            if (!user.value.trim()) { user.style.borderColor='var(--danger)'; return; }
+            if (!pin.value.trim() || pin.value.length < 4) { pin.style.borderColor='var(--danger)'; return; }
+
             const btn = form.querySelector('.btn-primary');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
             btn.disabled = true;
 
             setTimeout(() => {
-                alert(`✅ Acceso concedido, socio:\n"${userInput.value}"\n\nEntrando a tu panel de socio...`);
+                alert(`✅ Bienvenido socio: ${user.value}`);
                 btn.innerHTML = 'Ingresar como Socio';
                 btn.disabled = false;
-                // Redirigir al panel de socios:
-                // window.location.href = "/socio-panel";
             }, 1200);
         });
-
-        function shakeField(el) {
-            el.style.borderColor = '#ef4444';
-            el.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
-            el.focus();
-            setTimeout(() => {
-                el.style.borderColor = '';
-                el.style.boxShadow = '';
-            }, 2000);
-        }
     </script>
 </body>
 </html>
