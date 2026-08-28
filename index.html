@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - PROXY M1NX SOCIOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #05050a;
+            --card: #0d0d15;
+            --border: #1a1a2e;
+            --accent: #8b5cf6;
+            --accent-alt: #06b6d4;
+            --text: #ffffff;
+            --muted: #a1a1aa;
+            --input-bg: #0a0a10;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
+                radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* Encabezado */
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .login-header p {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        /* Caja del formulario */
+        .login-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Botón Google */
+        .btn-google {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .btn-google svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-google:hover {
+            border-color: var(--accent);
+            background: rgba(139,92,246,0.05);
+        }
+
+        .admin-note {
+            font-size: 0.75rem;
+            color: var(--success);
+            text-align: center;
+            margin-top: -1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Separador visual */
+        .divider {
+            position: relative;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            background: var(--card);
+            padding: 0 1rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        /* Campos de entrada */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.9rem 1rem;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #555570;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+        }
+
+        /* Opción mantener sesión */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .remember input[type="checkbox"] {
+            accent-color: var(--accent);
+            width: auto;
+        }
+
+        /* Botón principal */
+        .btn-primary {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.95rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            background: #7c3aed;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Pie */
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .role-info {
+            background: rgba(6,182,212,0.08);
+            border: 1px solid rgba(6,182,212,0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--accent-alt);
+        }
+
+        /* Responsivo */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 1.75rem;
+            }
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">PROXY M1NX</div>
+            <h1>Bienvenido de nuevo</h1>
+            <p>Ingresa según tu tipo de cuenta.</p>
+        </div>
+
+        <div class="login-box">
+            <!-- Botón Google (Solo Administrador) -->
+            <button class="btn-google" id="btnGoogle">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continuar con Google
+            </button>
+            <div class="admin-note">Solo para el Administrador</div>
+
+            <div class="divider">
+                <span>Acceso Socios</span>
+            </div>
+
+            <div class="role-info">
+                <i class="fas fa-users"></i> Área exclusiva para socios autorizados
+            </div>
+
+            <!-- Formulario Socios: Usuario + PIN -->
+            <form id="socioForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="Tu usuario registrado" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="pin">PIN de Acceso</label>
+                    <input type="password" id="pin" placeholder="Tu código PIN seguro" required maxlength="10">
+                </div>
+
+                <div class="form-options">
+                    <label class="remember">
+                        <input type="checkbox" id="remember">
+                        Mantener sesión
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary">Ingresar como Socio</button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            ¿Tienes problemas? Contacta al administrador.
+        </div>
+    </div>
+
+    <script>
+        // --- LÓGICA DE ACCESO ---
+
+        // 1. BOTÓN GOOGLE (ADMINISTRADOR)
+        document.getElementById('btnGoogle').addEventListener('click', function() {
+            const correoAdmin = "jesusgutierrezmontanez05@gmail.com";
+            
+            // Simulamos la selección de cuenta
+            alert(`🔐 Selecciona tu cuenta de administrador:\n\n→ ${correoAdmin}\n\nEsta acción te llevará directamente al PANEL DE ADMINISTRACIÓN.`);
+            
+            // Aquí redirigirías al dashboard admin:
+            // window.location.href = "/admin-panel";
+        });
+
+        // 2. FORMULARIO SOCIOS (USUARIO + PIN)
+        const form = document.getElementById('socioForm');
+        const userInput = document.getElementById('username');
+        const pinInput = document.getElementById('pin');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!userInput.value.trim()) {
+                shakeField(userInput);
+                return;
+            }
+            if (!pinInput.value.trim() || pinInput.value.length < 4) {
+                shakeField(pinInput);
+                return;
+            }
+
+            // Simulación de verificación para socios
+            const btn = form.querySelector('.btn-primary');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert(`✅ Acceso concedido, socio:\n"${userInput.value}"\n\nEntrando a tu panel de socio...`);
+                btn.innerHTML = 'Ingresar como Socio';
+                btn.disabled = false;
+                // Redirigir al panel de socios:
+                // window.location.href = "/socio-panel";
+            }, 1200);
+        });
+
+        function shakeField(el) {
+            el.style.borderColor = '#ef4444';
+            el.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
+            el.focus();
+            setTimeout(() => {
+                el.style.borderColor = '';
+                el.style.boxShadow = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
